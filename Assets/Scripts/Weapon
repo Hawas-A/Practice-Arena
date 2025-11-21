@@ -1,0 +1,49 @@
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "NewWeapon", menuName = "Items/Weapon")]
+public class Weapon : Item
+{
+    [Header("Weapon Settings")]
+    [SerializeField] private int maxAmmo = 30;
+    [SerializeField] private float fireRate = 0.2f;
+    [SerializeField] private float damage = 20f;
+
+    public int AmmoCount { get; private set; }
+    public int MaxAmmo => maxAmmo;
+    public float FireRate => fireRate;
+    public float Damage => damage;
+
+    private float lastFireTime; // WeaponSystem 
+
+    private void OnEnable()
+    {
+        AmmoCount = MaxAmmo;   
+        lastFireTime = -fireRate;
+    }
+
+    public override void Use()
+    {
+        Fire();
+    }
+
+    public bool CanFire()
+    {
+        return AmmoCount > 0 && Time.time >= lastFireTime + FireRate;
+    }
+
+    public void Fire()
+    {
+        if (!CanFire()) return;
+
+        lastFireTime = Time.time;
+        AmmoCount--;
+
+        Debug.Log($"{itemName} fired. Ammo left: {AmmoCount}");
+    }
+
+    public void Reload()
+    {
+        AmmoCount = MaxAmmo;
+        Debug.Log($"{itemName} reloaded.");
+    }
+}

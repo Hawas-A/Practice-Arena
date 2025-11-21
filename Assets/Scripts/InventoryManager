@@ -1,0 +1,47 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public class InventoryManager : MonoBehaviour
+{
+    [Header("Inventory")]
+    [SerializeField] private List<Item> items = new List<Item>();
+
+    public Weapon ActiveWeapon { get; private set; }
+
+    public bool AddItem(Item item)
+    {
+        if (item == null) return false;
+
+        items.Add(item);
+        Debug.Log($"Added: {item.itemName}");
+        return true;
+    }
+
+    public bool RemoveItem(Item item)
+    {
+        if (!items.Contains(item)) return false;
+
+        items.Remove(item);
+        Debug.Log($"Removed: {item.itemName}");
+        return true;
+    }
+
+    public bool HasItem(Item item)
+    {
+        return items.Contains(item);
+    }
+
+    public void EquipWeapon(Weapon weapon)
+    {
+        if (weapon == null) return;
+
+        ActiveWeapon = weapon;
+        Debug.Log($"Equipped weapon: {weapon.itemName}");
+    }
+
+    public void UnequipWeapon()
+    {
+        ActiveWeapon = null;
+        Debug.Log("Weapon unequipped.");
+    }
+}
