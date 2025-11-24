@@ -25,12 +25,14 @@ public class Player : Character
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else
+        if (Instance != null && Instance != this)
         {
-            Debug.LogWarning("Multiple Player instances!");
+            Debug.LogWarning("Multiple Player instances detected. Destroying duplicate.");
             Destroy(gameObject);
+            return;
         }
+
+        Instance = this;
 
         playerInput = GetComponent<PlayerInput>();
         moveAction = playerInput.actions["Move"];
