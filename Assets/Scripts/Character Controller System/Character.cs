@@ -16,7 +16,7 @@ public abstract class  Character : MonoBehaviour
     public abstract void TakeDamage();
   
 
-    public  void Die()
+    public virtual void Die()
     {
         Debug.Log($"{gameObject.name} Died");
 
