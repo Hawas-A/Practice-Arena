@@ -2,8 +2,8 @@ using UnityEngine;
 
 public abstract class Item : ScriptableObject
 {
-    [Header("Item Info")]
-    // Use the Scribtable Object's Name 
+    
+    
 
     public abstract void Use(); 
 }

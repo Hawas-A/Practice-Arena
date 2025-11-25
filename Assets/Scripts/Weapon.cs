@@ -4,19 +4,19 @@ using UnityEngine;
 public class Weapon : Item
 {
     [Header("Weapon Settings")]
-     [field:SerializeField] private int maxAmmo = 30;
-     [field:SerializeField] private float fireRate = 0.2f;
-     [field:SerializeField] private float damage = 20f;
+    [field:SerializeField] public int MaxAmmo {get; private set;} = 30;
+    [field:SerializeField] public float FireRate {get; private set;} = 0.2f;
+    [field:SerializeField] public float Damage {get; private set;} = 20f;
 
-    public int MaxAmmo => maxAmmo;
-    public float FireRate => fireRate;
-    public float Damage => damage;
+    
+  
+      public int AmmoCount { get; private set; }
 
+  
 
     private void OnEnable()
     {
         AmmoCount = MaxAmmo;   
-        lastFireTime = -fireRate;
     }
 
     public override void Use()
@@ -30,14 +30,12 @@ public class Weapon : Item
 
     public bool CanFire()
     {
-        return AmmoCount > 0 && Time.time >= lastFireTime + FireRate;
+        return AmmoCount > 0; 
     }
 
     public void Fire()
     {
-        if (!CanFire()) return;
 
-        lastFireTime = Time.time;
         AmmoCount--;
 
     }
