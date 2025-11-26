@@ -55,7 +55,6 @@ public class WeaponSystem : MonoBehaviour
         if (activeWeaponIndex >= EquippedWeapons.Count) activeWeaponIndex = 0;
         if (activeWeaponIndex < 0) activeWeaponIndex = EquippedWeapons.Count - 1;
 
-        // Reset dynamic state for new active weapon
         currentAmmo = ActiveWeapon.MaxAmmo;
         lastFireTime = -999f;
     }
@@ -66,7 +65,6 @@ public class WeaponSystem : MonoBehaviour
 
         activeWeaponIndex = index;
 
-        // Reset dynamic state
         currentAmmo = ActiveWeapon.MaxAmmo;
         lastFireTime = -999f;
     }
@@ -88,7 +86,6 @@ public class WeaponSystem : MonoBehaviour
         currentAmmo--;
         lastFireTime = Time.time;
 
-        Debug.Log($"{ActiveWeapon.name} fired. Remaining ammo: {currentAmmo}");
     }
 
     
@@ -100,7 +97,6 @@ public class WeaponSystem : MonoBehaviour
         lastFireTime = -999f;
 
         ActiveWeapon.Reload();
-        Debug.Log($"{ActiveWeapon.name} reloaded.");
     }
 
     
