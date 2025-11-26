@@ -13,29 +13,12 @@ public class Enemy : Character
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
-    public void Init()
-    {
-        gameObject.SetActive(true);
-    }
 
-    public override void ApplyDamage()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void Attack()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void TakeDamage()
-    {
-        throw new System.NotImplementedException();
-    }
+ 
 
     public override void Die()
     {
+        gameObject.SetActive(false);
         OnDeath?.Invoke(this);
-        gameObject.SetActive(false);    
     }
 }

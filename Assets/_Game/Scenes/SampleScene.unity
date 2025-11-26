@@ -507,8 +507,10 @@ MonoBehaviour:
   - {fileID: 1032390968}
   - {fileID: 1025575578}
   - {fileID: 1607744585}
-  enemyPrefab: {fileID: 8580732598787364609, guid: cc59a582338a66d4799987906f913d92, type: 3}
+  enemyPrefab:
+  - {fileID: 8580732598787364609, guid: cc59a582338a66d4799987906f913d92, type: 3}
   baseSpawnRate: 1
+  spawnRateIncreasePerSecond: 0.1
   initialPoolSize: 5
   maxPoolSize: 10
 --- !u!1 &410087039

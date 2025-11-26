@@ -7,18 +7,10 @@ public abstract class  Character : MonoBehaviour
     [SerializeField] protected float moveSpeed = 5.0f;
 
 
-    public abstract void Attack();
-
-
-    public abstract void ApplyDamage();
-
-
-    public abstract void TakeDamage();
   
 
     public virtual void Die()
     {
-        Debug.Log($"{gameObject.name} Died");
-
+        
     }
 }

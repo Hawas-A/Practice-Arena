@@ -5,8 +5,10 @@ using UnityEngine.Pool;
 public class TargetEnemySpawner : MonoBehaviour
 {
     [SerializeField] private List<Transform> spawnPoints;
-    [SerializeField] private Enemy enemyPrefab;
+    [SerializeField] private Enemy[] enemyPrefab;
+
     [SerializeField] private float baseSpawnRate = 1f;
+    [SerializeField] private float spawnRateIncreasePerSecond = 0.1f;
     private float currentSpawnRate;
     private float spawnTimer = 0f;
 
@@ -21,9 +23,17 @@ public class TargetEnemySpawner : MonoBehaviour
         currentSpawnRate = baseSpawnRate;
 
         enemyPool = new ObjectPool<Enemy>(
-            () => Instantiate(enemyPrefab),
-            OnGetEnemy, OnReleaseEnemy, OnDestroyEnemy,
-            false, initialPoolSize, maxPoolSize
+            () => 
+            {
+                int idx = Random.Range(0, enemyPrefab.Length);
+                return Instantiate(enemyPrefab[idx]);
+            },
+            OnGetEnemy, 
+            OnReleaseEnemy, 
+            OnDestroyEnemy,
+            false, 
+            initialPoolSize, 
+            maxPoolSize
         );
 
         for (int i = 0; i < initialPoolSize; i++)
@@ -35,7 +45,8 @@ public class TargetEnemySpawner : MonoBehaviour
 
     private void Update()
     {
-        activeEnemies.RemoveAll(e => e == null || !e.gameObject.activeSelf);
+        float t = Time.timeSinceLevelLoad;
+        UpdateSpawnRate(t * spawnRateIncreasePerSecond);
 
         spawnTimer += Time.deltaTime;
 
@@ -53,7 +64,6 @@ public class TargetEnemySpawner : MonoBehaviour
         Enemy enemy = enemyPool.Get();
         enemy.transform.position = spawnPos;
         enemy.transform.rotation = Quaternion.identity; // or some default rotation
-        enemy.Init();
 
         enemy.OnDeath += HandleEnemyDeath;
         activeEnemies.Add(enemy);
@@ -66,8 +76,6 @@ public class TargetEnemySpawner : MonoBehaviour
 
     public Vector3 GetRandomSpawnPointPosition()
     {
-        if (spawnPoints == null || spawnPoints.Count == 0)
-            return Vector3.zero;
         Transform point = spawnPoints[Random.Range(0, spawnPoints.Count)];
         return point.position;
     }
@@ -78,8 +86,7 @@ public class TargetEnemySpawner : MonoBehaviour
         {
             if (e != null)
             {
-                e.OnDeath -= HandleEnemyDeath;
-                enemyPool.Release(e);
+                HandleEnemyDeath(e);
             }
         }
         activeEnemies.Clear();
@@ -87,6 +94,7 @@ public class TargetEnemySpawner : MonoBehaviour
 
     private void HandleEnemyDeath(Enemy enemy)
     {
+        activeEnemies.RemoveAll(e => e == null || !e.gameObject.activeSelf);
         enemy.OnDeath -= HandleEnemyDeath;
         enemyPool.Release(enemy);
     }

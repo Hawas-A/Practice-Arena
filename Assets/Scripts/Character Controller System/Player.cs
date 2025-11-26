@@ -61,27 +61,23 @@ public class Player : Character
 
     public void Move()
     {
-   
+
         Vector2 dir2D = moveAction.ReadValue<Vector2>();
         Sprint();
-
-        Vector3 camForward = cameraTransform.forward;
-        Vector3 camRight = cameraTransform.right;
-        camForward.y = 0f; camRight.y = 0f;
-        camForward.Normalize(); 
-        camRight.Normalize();
+        Vector3 camForward, camRight;
+        SetupCameraDirections(out camForward, out camRight);
         Vector3 moveDir = camForward * dir2D.y + camRight * dir2D.x;
-        moveDir.Normalize(); 
+        moveDir.Normalize();
 
-        
+
         Vector3 move = moveDir * currentSpeed + Vector3.up * velocity.y;
 
-       
+
         playerController.Move(move * Time.deltaTime);
 
         if (moveDir.sqrMagnitude > 0.01f)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation,
+            transform.rotation = Quaternion.Lerp(transform.rotation,
                                                   Quaternion.LookRotation(moveDir),
                                                   10f * Time.deltaTime);
         }
@@ -96,53 +92,29 @@ public class Player : Character
         }
         velocity.y += gravity * Time.deltaTime;
 
-        if (playerController.isGrounded && velocity.y < 0f)
-        {
-            velocity.y = -2f;
-        }
     }
 
     private void HandleRotation()
     {
-        Vector2 dir2D = moveAction.ReadValue<Vector2>();
+        
+        Vector3 camForward, camRight;
+        SetupCameraDirections(out camForward, out camRight);
 
-        Vector3 camForward = cameraTransform.forward;
-        Vector3 camRight = cameraTransform.right;
-        camForward.y = 0f;
-        camRight.y = 0f;
-        camForward.Normalize();
-        camRight.Normalize();
-
-        Vector3 lookDirection = camForward * dir2D.y + camRight * dir2D.x;
+        Vector3 lookDirection = camForward + camRight ;
 
         if (lookDirection.sqrMagnitude > 0.001f)
         {
             Quaternion targetRot = Quaternion.LookRotation(lookDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 10f * Time.deltaTime);
-        }
-        else
-        {
-           
-            Vector3 cameraYaw = new Vector3(camForward.x, 0, camForward.z);
-            if (cameraYaw.sqrMagnitude > 0.001f)
-            {
-                Quaternion targetRot = Quaternion.LookRotation(cameraYaw);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 5f * Time.deltaTime);
-            }
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, 10f * Time.deltaTime);
         }
     }
-    public override void Attack()
-    {
-        throw new System.NotImplementedException();
-    }
 
-    public override void ApplyDamage()
+    private void SetupCameraDirections(out Vector3 camForward, out Vector3 camRight)
     {
-        throw new System.NotImplementedException();
-    }
-
-    public override void TakeDamage()
-    {
-        throw new System.NotImplementedException();
+        camForward = cameraTransform.forward;
+        camRight = cameraTransform.right;
+        camForward.y = 0f; camRight.y = 0f;
+        camForward.Normalize();
+        camRight.Normalize();
     }
 }
