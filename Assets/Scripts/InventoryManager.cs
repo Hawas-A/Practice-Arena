@@ -7,12 +7,11 @@ public class InventoryManager : MonoBehaviour
     private List<Item> items = new List<Item>();
 
 
-    public bool AddItem(Item item)
+    public void AddItem(Item item)
     {
         if (item == null) return false;
 
         items.Add(item);
-        return true;
     }
 
     public bool RemoveItem(Item item)
@@ -27,6 +26,22 @@ public class InventoryManager : MonoBehaviour
     {
         return items.Contains(item);
     }
+
+    public uint GetItemCount(Item item)
+    {
+    if (item == null) return 0;
+
+    uint count = 0;
+
+    foreach (var i in items)
+    {
+        if (i == item)
+            count++;
+    }
+
+    return count;
+    }
+
 
    
 }
