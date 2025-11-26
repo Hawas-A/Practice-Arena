@@ -11,6 +11,7 @@ public class TargetEnemySpawner : MonoBehaviour
     [SerializeField] private float spawnRateIncreasePerSecond = 0.1f;
     private float currentSpawnRate;
     private float spawnTimer = 0f;
+    private float saveTime;
 
     [SerializeField] private int initialPoolSize = 5;
     [SerializeField] private int maxPoolSize = 10;
@@ -43,9 +44,13 @@ public class TargetEnemySpawner : MonoBehaviour
         }
     }
 
+    public void OnEnable()
+    {
+        saveTime = Time.time;
+    }
     private void Update()
     {
-        float t = Time.timeSinceLevelLoad;
+        float t = Time.time - saveTime;
         UpdateSpawnRate(t * spawnRateIncreasePerSecond);
 
         spawnTimer += Time.deltaTime;
