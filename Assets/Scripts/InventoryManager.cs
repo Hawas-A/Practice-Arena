@@ -4,7 +4,7 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     [Header("Inventory")]
-     private List<Item> items = new List<Item>();
+    private List<Item> items = new List<Item>();
 
     public Weapon ActiveWeapon { get; private set; }
 
@@ -29,4 +29,5 @@ public class InventoryManager : MonoBehaviour
         return items.Contains(item);
     }
 
+   
 }
