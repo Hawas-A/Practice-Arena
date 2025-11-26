@@ -6,7 +6,6 @@ public class InventoryManager : MonoBehaviour
     [Header("Inventory")]
     private List<Item> items = new List<Item>();
 
-    public Weapon ActiveWeapon { get; private set; }
 
     public bool AddItem(Item item)
     {
