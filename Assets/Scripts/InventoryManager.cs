@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class InventoryManager : MonoBehaviour
 
     public void AddItem(Item item)
     {
-        if (item == null) return false;
+        if (item == null) return;
 
         items.Add(item);
     }
@@ -29,17 +30,7 @@ public class InventoryManager : MonoBehaviour
 
     public uint GetItemCount(Item item)
     {
-    if (item == null) return 0;
-
-    uint count = 0;
-
-    foreach (var i in items)
-    {
-        if (i == item)
-            count++;
-    }
-
-    return count;
+    return (uint)items.Count(i => i != null && i == item);
     }
 
 
