@@ -11,17 +11,18 @@ public class Projectile : MonoBehaviour
     private float lifeTimer;
     private Vector3 direction;
 
-
+    private Character shooterCharacter;
     public void SetPool(IObjectPool<Projectile> objectPool)
     {
         pool = objectPool; 
     }
 
-    public void Init(Vector3 startPos, Vector3 dir)
+    public void Init(Vector3 startPos, Vector3 dir, Character shooter)
     {
         transform.position = startPos;
         direction = dir;
         lifeTimer = lifeTime;
+        shooterCharacter = shooter;
     }
 
 
@@ -43,6 +44,10 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject == shooterCharacter)
+        {
+            return;
+        }
         pool.Release(this);
     }
 

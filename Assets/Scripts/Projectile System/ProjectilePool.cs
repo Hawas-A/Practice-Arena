@@ -43,9 +43,9 @@ public class ProjectilePool : MonoBehaviour
     {
         Destroy(proj.gameObject);
     }
-    public void Fire(Vector3 position, Vector3 direction)
+    public void Fire(Vector3 position, Vector3 direction, Character shooter)
     {
         Projectile proj = pool.Get();
-        proj.Init(position, direction);
+        proj.Init(position, direction, shooter);
     }
 }
